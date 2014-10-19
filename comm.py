@@ -36,7 +36,7 @@ def start_com2(MESSAGE):
     UDP_IP = '192.168.1.24'
     UDP_PORT = 49000
 
-    #MESSAGE2 = "CMND0sim/electrical/battery_1_off" message asd
+    #MESSAGE2 = "CMND0sim/electrical/battery_1_off" message asd2
     MESSAGE = "CMND0" + MESSAGE
     sock2 = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
