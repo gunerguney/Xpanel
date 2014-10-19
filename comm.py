@@ -37,7 +37,7 @@ def start_com2(MESSAGE):
     UDP_PORT = 49000
 
     #MESSAGE2 = "CMND0sim/electrical/battery_1_off" message asd
-    MESSAGE = "CMND0" + MESSAGE
+    MESSAGE = "CMND" + MESSAGE
     sock2 = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
     sock2.sendto(MESSAGE, (UDP_IP, UDP_PORT))
