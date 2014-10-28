@@ -26,7 +26,6 @@ pitotHeatLed = Label()
 avionicsMasterLed = Label()
 
 
-
 class XPanel(Tk):
     def __init__(self,parent):
         Tk.__init__(self,parent)
@@ -328,8 +327,6 @@ if __name__ == "__main__":
     app = XPanel(None)
     app.title("XPANEL V0.0")
     app.mainloop()
-
-
 
 
 

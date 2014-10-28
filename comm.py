@@ -22,8 +22,8 @@ def start_com1(drefList):
         data = sock1.recv(BUFFER_SIZE)
         recv_data = data.split('_')
 
-        drefList[0].value = recv_data[5]
-        drefList[1].value = recv_data[7]
+        drefList[0].value = recv_data[5]    #5 is battery on
+        drefList[1].value = recv_data[7]    #7 is beacon lighs on
         drefList[2].value = recv_data[8]
         drefList[3].value = recv_data[11]
         drefList[4].value = recv_data[9]
@@ -36,7 +36,6 @@ def start_com2(MESSAGE):
     UDP_IP = '192.168.1.24'
     UDP_PORT = 49000
 
-    #MESSAGE2 = "CMND0sim/electrical/battery_1_off" message asd2
     MESSAGE = "CMND0" + MESSAGE
     sock2 = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
@@ -44,4 +43,3 @@ def start_com2(MESSAGE):
     print str(bytes(MESSAGE)) + " sent"
 
 
-    #deneme
