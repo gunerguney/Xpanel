@@ -12,9 +12,12 @@ def startThread():
     t.start()
 
 def startThread2(cmd):
-    t1 = threading.Thread(target= comm.start_com2,args=[cmd])
-    t1.start()
+    t2 = threading.Thread(target= comm.start_com2,args=[cmd])
+    t2.start()
 
+def startThread3():
+    t3 = threading.Thread(target= comm.start_com3, args=[])
+    t3.start()
 
 batLed = Label()
 bcnLed = Label()
@@ -321,6 +324,7 @@ class XPanel(Tk):
         #--------------------end - leds
 
         startThread()
+        startThread3()
 
 
 if __name__ == "__main__":

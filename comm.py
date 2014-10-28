@@ -1,6 +1,7 @@
 __author__ = 'guney'
 
 import socket
+from struct import*
 
 def start_com1(drefList):
 
@@ -34,7 +35,7 @@ def start_com1(drefList):
 
 def start_com2(MESSAGE):
     UDP_IP = '192.168.1.24'
-    UDP_PORT = 49000
+    UDP_PORT = 49004
 
     MESSAGE = "CMND0" + MESSAGE
     sock2 = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
@@ -43,3 +44,41 @@ def start_com2(MESSAGE):
     print str(bytes(MESSAGE)) + " sent"
 
 
+def start_com3():
+    UDP_IP = '127.0.0.1'
+    UDP_PORT = 49003
+    BUFFER_SIZE = 1024
+
+    sock3 = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+    sock3.bind((UDP_IP, UDP_PORT))
+
+
+    while True:
+
+        data = sock3.recv(BUFFER_SIZE)
+        parseUDPData(data)
+
+def parseUDPData(message):
+
+    header = message[0:4]
+
+    part1 = message[4:39]
+    part2 = message[40:75]
+    part3 = message[76:111]
+    part4 = message[112:147]
+
+    index1 = unpack('i', part1[1:5])
+    index2 = unpack('i', part2[1:5])
+    index3 = unpack('i', part3[1:5])
+    index4 = unpack('i', part4[1:5])
+
+    vind    = unpack('f',part1[5:9])
+
+    gear    = unpack('f',part2[5:9])
+    wbreak  = unpack('f',part2[9:13])
+
+    pitch   = unpack('f', part4[5:9])
+
+    print pitch[0]
+
+start_com3()
