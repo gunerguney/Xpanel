@@ -42,3 +42,6 @@ def start_com2(MESSAGE):
 
     sock2.sendto(MESSAGE, (UDP_IP, UDP_PORT))
     print str(bytes(MESSAGE)) + " sent"
+
+
+    #deneme
