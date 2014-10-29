@@ -2,11 +2,20 @@ __author__ = 'guney'
 
 import socket
 from struct import*
+import time
+import xpanel
+import plotting
+
+data = []
+start_time = 0
+
+start_time = time.time()
+record_data = False
 
 def start_com1(drefList):
 
     BUFFER_SIZE = 1024
-    UDP_IP = '192.168.1.101'
+    UDP_IP = '192.168.1.21'
     UDP_PORT = 8894
 
     sock1 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -34,8 +43,8 @@ def start_com1(drefList):
 
 
 def start_com2(MESSAGE):
-    UDP_IP = '192.168.1.24'
-    UDP_PORT = 49004
+    UDP_IP = '192.168.1.21'
+    UDP_PORT = 49000
 
     MESSAGE = "CMND0" + MESSAGE
     sock2 = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
@@ -54,11 +63,12 @@ def start_com3():
 
 
     while True:
-
         data = sock3.recv(BUFFER_SIZE)
         parseUDPData(data)
 
 def parseUDPData(message):
+
+    global elevator
 
     header = message[0:4]
 
@@ -66,19 +76,59 @@ def parseUDPData(message):
     part2 = message[40:75]
     part3 = message[76:111]
     part4 = message[112:147]
+    part5 = message[148:183]
+    part6 = message[184:219]
+    part7 = message[220:255]
 
     index1 = unpack('i', part1[1:5])
     index2 = unpack('i', part2[1:5])
     index3 = unpack('i', part3[1:5])
     index4 = unpack('i', part4[1:5])
 
-    vind    = unpack('f',part1[5:9])
+    vind             = unpack('f',part1[5:9])
+    verticalSpeed    = unpack('f',part2[13:17])
+    pitch            = unpack('f',part4[5:9])
+    altitude         = unpack('f',part6[25:29])
+    elevator         = unpack('f',part7[5:9])
 
-    gear    = unpack('f',part2[5:9])
-    wbreak  = unpack('f',part2[9:13])
 
-    pitch   = unpack('f', part4[5:9])
+    elapsed_time = time.time() - start_time
 
-    print pitch[0]
+    dat = {'time':elapsed_time, 'speed':vind[0], 'verticalSpeed':verticalSpeed[0],'pitch':pitch[0],'altitude':altitude[0]}
 
-start_com3()
+    if record_data==True:
+        data.append(dat)
+
+
+def start_test():
+    global start_time
+    global record_data
+    start_time = time.time()
+    record_data = True
+
+def stop_test():
+    global record_data
+    global data
+
+    record_data = False
+
+    speed = []
+    time = []
+    verticalSpeed = []
+    pitch = []
+    altitude = []
+
+
+    for i in range(0,len(data)):
+        speed.append( data[i]['speed'])
+        time.append( data[i]['time'])
+        verticalSpeed.append(data[i]['verticalSpeed'])
+        pitch.append(data[i]['pitch'])
+        altitude.append(data[i]['altitude'])
+
+
+
+    plotting.plot_chart(time,speed,"time-speed")
+    plotting.plot_chart(time,verticalSpeed,"time-verticalSpeed")
+    plotting.plot_chart(time,pitch,"time-pitch")
+    plotting.plot_chart(time,altitude,"time-altitude")

@@ -5,6 +5,7 @@ import threading
 from onChange import*
 import comm
 
+
 drefList = []
 
 def startThread():
@@ -19,6 +20,14 @@ def startThread3():
     t3 = threading.Thread(target= comm.start_com3, args=[])
     t3.start()
 
+def startThread4():
+    t4 = threading.Thread(target=comm.start_test, args=[] )
+    t4.start()
+
+def startThread5():
+    t5 = threading.Thread(target=comm.stop_test, args=[])
+    t5.start()
+
 batLed = Label()
 bcnLed = Label()
 landLed = Label()
@@ -28,6 +37,7 @@ strobeLed = Label()
 pitotHeatLed = Label()
 avionicsMasterLed = Label()
 
+elevatorValue = StringVar()
 
 class XPanel(Tk):
     def __init__(self,parent):
@@ -41,7 +51,8 @@ class XPanel(Tk):
         menu = Menu(self)
         self.config(menu=menu)
 
-        variable = StringVar()
+        global elevatorValue
+
 
         global drefList
         global batLed,bcnLed,landLed,taxiLed,navLed,strobeLed,pitotHeatLed,avionicsMasterLed
@@ -323,7 +334,17 @@ class XPanel(Tk):
 
         #--------------------end - leds
 
-        startThread()
+        startTestBtn = Button(self, text="START TEST", width=10, command=startThread4)
+        startTestBtn.grid(row=9, column=1)
+
+        stopTestBtn = Button(self, text="STOP TEST", width=10, command=startThread5)
+        stopTestBtn.grid(row=9, column=2)
+
+        elevatorValue.set( "Zero")
+        elevatorLbl = Label(self,text=elevatorValue.get())
+        elevatorLbl.grid(row=9, column=3)
+
+        #startThread()
         startThread3()
 
 
